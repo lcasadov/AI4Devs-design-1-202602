@@ -1,0 +1,10 @@
+# RecruitFlow — Prettier ignore
+dist/
+build/
+coverage/
+src/generated/
+node_modules/
+*.min.js
+*.min.css
+CHANGELOG.md
+public/
