@@ -19,6 +19,7 @@
 9. [Decisiones de arquitectura (ADR)](#9-decisiones-de-arquitectura-adr)
 10. [Contratos de API REST por módulo](#10-contratos-de-api-rest-por-módulo)
 11. [Especificación OpenAPI 3.0](#11-especificación-openapi-30)
+12. [Diseño de seguridad](./seguridad-RecruitFlow.md) *(documento separado)*
 
 ---
 
