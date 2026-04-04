@@ -19,7 +19,7 @@
 9. [Decisiones de arquitectura (ADR)](#9-decisiones-de-arquitectura-adr)
 10. [Contratos de API REST por módulo](#10-contratos-de-api-rest-por-módulo)
 11. [Especificación OpenAPI 3.0](#11-especificación-openapi-30)
-12. [Diseño de seguridad](./seguridad-RecruitFlow.md) *(documento separado)*
+12. [Diseño de seguridad](../security/security-design.md) *(documento separado)*
 
 ---
 
@@ -2129,7 +2129,7 @@ APPLIED → SCREENING → INTERVIEW → OFFER → HIRED
 
 ## 11. Especificación OpenAPI 3.0
 
-La especificación completa en formato YAML se encuentra en el archivo [`openapi.yaml`](./openapi.yaml) en la raíz del proyecto.
+La especificación completa en formato YAML se encuentra en el archivo [`openapi.yaml`](./openapi.yaml) en la misma carpeta `docs/architecture/`.
 
 ### Resumen de paths cubiertos
 
