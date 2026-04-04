@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -rn \"\\\\.claude/agents/project\\\\.md\\\\|padel-api-rest\\\\|padel_api_rest\\\\|PADEL\" \"C:\\\\proyectos\\\\AI4Devs-design-1-202602\\\\.claude\\\\agents\"\" --include=\"*.md \")",
+      "Bash(sed -i 's|padel-rest-api|recruitflow-api-rest|g' \"C:/proyectos/AI4Devs-design-1-202602/.claude/agents/backend-readme-architect.md\")",
+      "Bash(sed -i 's|PADEL-42-crud-usuarios|RF-42-crud-usuarios|g; s|PADEL-43-endpoint-crear-usuario|RF-43-endpoint-crear-usuario|g; s|PADEL-44-validacion-email|RF-44-validacion-email|g; s|`PADEL-42`|`RF-42`|g; s|`PADEL-55`, `PADEL-56`|`RF-55`, `RF-56`|g' \"C:/proyectos/AI4Devs-design-1-202602/.claude/agents/orchestrator.md\")",
+      "Bash(sed -i 's|\\\\.claude/agents/project\\\\.md|docs/architecture/project.md|g' \"C:/proyectos/AI4Devs-design-1-202602/CLAUDE.md\")",
+      "Bash(sed -i 's/SCRUM-42/RF-42/g; s/PADEL-42/RF-42/g; s/PADEL-43/RF-43/g; s/PADEL-44/RF-44/g; s/PADEL-55/RF-55/g; s/PADEL-56/RF-56/g' \"C:/proyectos/AI4Devs-design-1-202602/CLAUDE.md\")"
+    ]
+  }
+}
