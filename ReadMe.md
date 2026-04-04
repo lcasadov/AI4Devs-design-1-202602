@@ -1,140 +1,154 @@
-# EN
+# 🔄 RecruitFlow — Aplicación de Gestión del Proceso de Reclutamiento
 
-You've now learned the basics of software systems analysis and design, as well as some of the most relevant diagramming tools.
+## Descripción General
 
-It's your turn to try out the prompts we've provided as examples so you can start gaining confidence using AI assistants in this initial phase of software development.
-
-In this exercise your mission will be to design and document a software system following the phases of:
-
-- Research and analysis  
-- Use cases  
-- Data modeling  
-- High level design
+**RecruitFlow** es una aplicación web para gestionar de extremo a extremo el ciclo de reclutamiento de personal dentro de una organización. Basada en un flujo circular de 7 etapas, permite a los equipos de Recursos Humanos crear vacantes, publicarlas, recibir y revisar candidaturas, aplicar pruebas, programar entrevistas y finalmente contratar a los candidatos seleccionados.
 
 ---
 
-### And what system? The **LTI** system.
+## 🎯 Objetivo
 
-LTI is a startup that wants to develop the **ATS (Applicant-Tracking System)** of the future.
-
-Nothing's built yet, so it's time to put on your **product manager** hat and define those key features that will make LTI stand out from the competition:
-
-- Increasing efficiency for HR departments
-- Improve real-time collaboration between recruiters and managers 
-- Automations 
-- AI assistance in various tasks 
-
-It's time to brainstorm, research what the keys to success might be, and write it down for the rest of the team.
+Centralizar y digitalizar todo el proceso de selección de personal, proporcionando trazabilidad completa desde la creación de una oferta de empleo hasta la contratación del candidato, eliminando procesos manuales dispersos en correos, hojas de cálculo o herramientas desconectadas.
 
 ---
 
-### Your mission is to design the first version of the system, delivering the following artifacts:
+## 🔁 Flujo del Proceso (7 Etapas)
 
-- ✅ **Brief description of LTI software**, added value and competitive advantages.  
-- ✅ **Explanation of the main functions.**
-- ✅ **Add a Lean Canvas diagram** to understand the business model.  
-- ✅ **Description of the 3 main use cases**, with the diagram associated with each one. 
-- ✅ **Data model** that covers entities, attributes (name and type) and relationships.
-- ✅ **High-level system design**, both explained and with an attached diagram.  
-- ✅ **C4 diagram** that goes in depth into one of the system components, whichever you prefer.
+El proceso sigue un ciclo continuo y ordenado:
 
-Use your preferred assistant: ChatGPT, Google Gemini, Microsoft Copilot, Claude...
+```
+1. Crear Oferta  →  2. Publicar  →  3. Recibir Solicitudes
+        ↑                                        ↓
+7. Contratar     ←  6. Entrevistar  ←  5. Pruebas Online  ←  4. Revisar Candidaturas
+```
 
----
+### Etapa 1 — Creación de Ofertas de Empleo
+- Formulario para definir el puesto: título, descripción, requisitos, salario y departamento.
+- Asignación de responsable de reclutamiento.
+- Definición de fechas límite de aplicación.
+- Estado: `Borrador` | `Lista para publicar`
 
-### 📁 Delivery
+### Etapa 2 — Publicación en Canales
+- Publicación simultánea o selectiva en: tableros de empleo (LinkedIn, InfoJobs, Indeed), web corporativa y redes sociales.
+- Gestión centralizada de los canales activos por vacante.
+- Seguimiento de rendimiento por canal (número de aplicaciones recibidas por fuente).
 
-- Document everything in a single Markdown document (`.md`) named: 
-  `LTI-iniciales` (ej. `LTI-ARM`).
+### Etapa 3 — Recepción de Solicitudes
+- Buzón centralizado de candidaturas para cada vacante.
+- Carga automática de CVs y cartas de presentación.
+- Registro de la fecha, canal de origen y datos del candidato.
+- Detección de duplicados (mismo candidato en múltiples canales).
 
-- Prompts must be in a separate file: `prompts.md`
+### Etapa 4 — Revisión de Candidaturas
+- Panel de revisión con filtros por palabras clave, experiencia, formación y puntuación.
+- Funcionalidad de descarte, marcado como favorito o avance a la siguiente etapa.
+- Comentarios internos del equipo sobre cada candidato.
+- Estados: `Pendiente` | `En revisión` | `Descartado` | `Avanzado`
 
-- Leave both files inside a folder with the same name (`LTI-initials`)  
-  and upload it to the **GitHub repository** of this topic.
+### Etapa 5 — Pruebas Online
+- Asignación de pruebas técnicas o psicométricas al candidato por correo.
+- Integración con plataformas de evaluación externas o módulo propio de cuestionarios.
+- Registro automático de resultados y puntuaciones.
+- Umbral configurable para avance automático a entrevistas.
 
----
+### Etapa 6 — Programación de Entrevistas
+- Calendario integrado para agendar entrevistas (presencial, telefónica o videoconferencia).
+- Envío automático de invitaciones al candidato y al entrevistador.
+- Recordatorios automáticos previos a la entrevista.
+- Registro del resultado y feedback post-entrevista.
 
-### 📌 Important notes  
-
-- The repository will be **collaborative**, we will accept pull requests to generate a common base with all the folders.
-
-- Remember to **update to the latest version of the repository** before releasing your changes to avoid conflicts.
-
-- If you're not sure how to stay up-to-date before publishing your content and encountering conflicts, **ask in the WhatsApp group** or check out the Git documentation.
-
-- **Don't forget to add your prompts to `prompts.md` inside your folder.**
-
----
-
-### 🚀 Go for it!
-
-
-# ES
-
-Ya has aprendido los básicos de análisis y diseño de sistemas de software, y algunas de las herramientas de diagramas más relevantes.
-
-Es tu turno de probar los prompts que hemos dado como ejemplo para que empieces a coger soltura con el uso de asistentes de IA en esta primera fase del desarrollo de software.
-
-En este ejercicio tu misión será diseñar y documentar un sistema de software siguiendo las fases de:
-
-- Investigación y análisis  
-- Casos de uso  
-- Modelado de datos  
-- Diseño de alto nivel
+### Etapa 7 — Contratación
+- Generación de la oferta formal al candidato seleccionado.
+- Registro del estado de aceptación o rechazo de la oferta.
+- Notificación automática a candidatos no seleccionados.
+- Cierre de la vacante y archivo del proceso para auditoría.
 
 ---
 
-### ¿Y qué sistema? El de **LTI**
+## 👤 Roles de Usuario
 
-LTI es una startup que quiere desarrollar el **ATS (Applicant-Tracking System)** del futuro.
-
-Todavía no hay nada creado, así que toca ponerse el gorro de **product manager** y definir esas funcionalidades clave que harán brillar a LTI por encima de los competidores:
-
-- Aumentar la eficiencia para los departamentos de HR  
-- Mejorar la colaboración en tiempo real entre reclutadores y managers  
-- Automatizaciones  
-- Asistencia de IA en diversas tareas  
-
-Es el momento de hacer **brainstorming**, investigar cuáles pueden ser las claves del éxito, y dejarlo plasmado para el resto del equipo.
+| Rol | Permisos |
+|-----|----------|
+| **Administrador RRHH** | Acceso total: crear vacantes, gestionar candidatos, contratar |
+| **Reclutador** | Gestionar candidaturas, programar pruebas y entrevistas |
+| **Hiring Manager** | Ver candidatos avanzados, dejar feedback de entrevistas |
+| **Candidato** | Aplicar a vacantes, completar pruebas, consultar estado de su candidatura |
 
 ---
 
-### Tu misión es diseñar la primera versión del sistema, entregando los siguientes artefactos:
+## 📊 Panel de Control (Dashboard)
 
-- ✅ **Descripción breve del software LTI**, valor añadido y ventajas competitivas.  
-- ✅ **Explicación de las funciones principales.**  
-- ✅ **Añadir un diagrama Lean Canvas** para entender el modelo de negocio.  
-- ✅ **Descripción de los 3 casos de uso principales**, con el diagrama asociado a cada uno.  
-- ✅ **Modelo de datos** que cubra entidades, atributos (nombre y tipo) y relaciones.  
-- ✅ **Diseño del sistema a alto nivel**, tanto explicado como diagrama adjunto.  
-- ✅ **Diagrama C4** que llegue en profundidad a uno de los componentes del sistema, el que prefieras.  
-
-Utiliza el asistente que prefieras: ChatGPT, Google Gemini, Microsoft Copilot, Claude...
+- Visión general del estado de todas las vacantes activas.
+- Métricas clave: tiempo promedio de contratación, tasa de conversión por etapa, fuente más efectiva.
+- Gráfico del embudo de reclutamiento (cuántos candidatos hay en cada etapa).
+- Alertas de vacantes con poca actividad o próximas a vencer.
 
 ---
 
-### 📁 Entrega
+## 🔔 Notificaciones y Comunicaciones
 
-- Documenta todo en un único documento Markdown (`.md`) con el nombre:  
-  `LTI-iniciales` (ej. `LTI-ARM`).
-
-- Los prompts deben ir en un archivo aparte: `prompts.md`
-
-- Deja ambos archivos dentro de una carpeta con el mismo nombre (`LTI-iniciales`)  
-  y súbela al **repositorio GitHub** de este tema.
+- Correos automáticos en cada transición de etapa (al candidato y al responsable).
+- Plantillas de correo personalizables por etapa.
+- Notificaciones internas en la plataforma para el equipo de RRHH.
 
 ---
 
-### 📌 Notas importantes
+## 🔗 Integraciones
 
-- El repositorio será **colaborativo**, iremos aceptando las pull requests para generar una base común con todas las carpetas.
-
-- Recuerda **actualizar a la última versión del repositorio** antes de lanzar tus cambios para no tener conflictos.
-
-- Si no sabes cómo mantenerte actualizado antes de publicar tu contenido y encontrarte con conflictos, **pregunta en el grupo de Whatsapp** o revisa documentación sobre git.
-
-- **No olvides añadir tus prompts en `prompts.md` dentro de tu carpeta.**
+| Sistema | Propósito |
+|---------|-----------|
+| LinkedIn / Indeed / InfoJobs | Publicación de ofertas |
+| Google Calendar / Outlook | Programación de entrevistas |
+| Plataformas de evaluación (TestGorilla, etc.) | Pruebas online |
+| HRIS / ERP (SAP, Workday, etc.) | Sincronización del empleado contratado |
+| Firma digital (DocuSign, etc.) | Firma de oferta de empleo |
 
 ---
 
-### 🚀 ¡A por ello!
+## 🛠️ Stack Tecnológico (Recomendado)
+
+```
+Frontend:   React + TypeScript + Tailwind CSS
+Backend:    Node.js + Express / Python + FastAPI
+Base de datos: PostgreSQL
+Auth:       OAuth 2.0 / JWT
+Hosting:    AWS / Azure / GCP
+```
+
+---
+
+## 📁 Estructura de Módulos
+
+```
+recruitflow/
+├── vacantes/          # Gestión de ofertas de empleo
+├── candidatos/        # Base de datos de candidatos
+├── candidaturas/      # Solicitudes por vacante
+├── pruebas/           # Módulo de evaluaciones online
+├── entrevistas/       # Agenda y resultados de entrevistas
+├── contrataciones/    # Registro de ofertas y altas
+├── dashboard/         # Métricas e indicadores
+├── configuracion/     # Usuarios, roles, plantillas, canales
+└── integraciones/     # Conectores con sistemas externos
+```
+
+---
+
+## ✅ Criterios de Aceptación Funcionales
+
+- [ ] Un reclutador puede crear una vacante y publicarla en al menos 2 canales en menos de 5 minutos.
+- [ ] El sistema centraliza candidaturas de todos los canales en una única vista por vacante.
+- [ ] Un candidato puede completar una prueba online desde el enlace recibido por correo sin necesidad de registro previo.
+- [ ] El sistema impide avanzar a un candidato a la siguiente etapa sin completar la actual.
+- [ ] Todas las transiciones de etapa quedan registradas con fecha, hora y usuario responsable.
+- [ ] El dashboard se actualiza en tiempo real con el estado de cada proceso.
+
+---
+
+## 📌 Versión
+
+`v1.0.0 — MVP` | Alcance inicial: etapas 1 a 7 para un único puesto de trabajo simultáneo por organización.
+
+---
+
+*Documento funcional generado para el proyecto RecruitFlow.*
