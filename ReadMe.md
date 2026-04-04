@@ -151,4 +151,39 @@ recruitflow/
 
 ---
 
+## 📂 Documentación del proyecto
+
+```
+docs/
+├── product/
+│   ├── vision.md               # Visión del producto y análisis de mercado
+│   ├── PRD.md                  # Product Requirements Document
+│   └── casos-de-uso.md         # 44 casos de uso con diagramas Mermaid
+│
+├── architecture/
+│   ├── project.md              # Arquitectura completa: C4, hexagonal, Docker, API contracts
+│   ├── data-model.md           # Modelo de datos — 16 entidades base (erDiagram)
+│   ├── data-model-additional.md # 15 entidades adicionales
+│   └── openapi.yaml            # Especificación OpenAPI 3.0 completa
+│
+├── security/
+│   └── security-design.md      # RBAC, JWT, CORS, rate limiting, tenant isolation
+│
+└── quality/
+    ├── testing-strategy.md     # Pirámide 80/15/5, JUnit 5, Jest, Cypress, CI/CD
+    └── code-style-guide.md     # Google Style + OWASP, naming conventions
+
+config/
+├── checkstyle/
+│   ├── checkstyle.xml          # Copiar a backend/config/checkstyle/
+│   └── suppressions.xml
+└── frontend/
+    ├── .eslintrc.cjs           # Copiar a frontend/
+    ├── .prettierrc
+    ├── .prettierignore
+    └── .editorconfig
+```
+
+---
+
 *Documento funcional generado para el proyecto RecruitFlow.*
