@@ -1,0 +1,35 @@
+{
+  "_comment": "RecruitFlow — Prettier Configuration v1.0 (Google Style)",
+
+  "semi":              true,
+  "singleQuote":       true,
+  "jsxSingleQuote":    false,
+  "trailingComma":     "all",
+  "printWidth":        100,
+  "tabWidth":          2,
+  "useTabs":           false,
+  "bracketSpacing":    true,
+  "bracketSameLine":   false,
+  "arrowParens":       "always",
+  "endOfLine":         "lf",
+  "proseWrap":         "preserve",
+
+  "overrides": [
+    {
+      "files": "*.json",
+      "options": { "printWidth": 80 }
+    },
+    {
+      "files": "*.md",
+      "options": {
+        "printWidth":   80,
+        "proseWrap":    "always",
+        "singleQuote":  false
+      }
+    },
+    {
+      "files": "*.css",
+      "options": { "singleQuote": false }
+    }
+  ]
+}
