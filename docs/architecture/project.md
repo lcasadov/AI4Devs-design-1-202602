@@ -6,6 +6,19 @@
 
 ---
 
+## Configuración del proyecto (leída por los agentes)
+
+| Variable | Valor |
+|---|---|
+| `REPO_ROOT` | `C:/proyectos/AI4Devs-design-1-202602` |
+| `BASE_BRANCH` | `main` |
+| `JIRA_PROJECT_KEY` | `RF` |
+| `PROJECT_NAME` | `recruitflow` |
+| `BACKEND_DIR` | `recruitflow-api-rest` |
+| `FRONTEND_DIR` | `recruitflow-frontend` |
+
+---
+
 ## Tabla de contenidos
 
 1. [Resumen ejecutivo](#1-resumen-ejecutivo)
