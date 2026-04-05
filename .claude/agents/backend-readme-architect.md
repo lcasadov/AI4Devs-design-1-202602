@@ -127,7 +127,7 @@ Si el MCP no está disponible, omite silenciosamente e incluye el tiempo en el m
 <dependency>
     <groupId>org.springdoc</groupId>
     <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-    <version>2.3.0</version>
+    <version>2.8.16</version>
 </dependency>
 ```
 
