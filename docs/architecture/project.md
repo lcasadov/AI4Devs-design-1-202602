@@ -698,7 +698,7 @@ graph TB
 | Pipeline | `/api/v1/applications` | GET, POST, PUT /stage, GET /history |
 | Entrevistas | `/api/v1/interviews` | GET, POST, PUT, POST /feedback |
 | Pruebas | `/api/v1/assessments` | GET, POST, GET /{id}/results |
-| Propuestas | `/api/v1/proposals` | POST, GET /{token}/public, POST /{token}/feedback |
+| Propuestas | `/api/v1/offers` | POST, GET /{id}/send, PATCH /{id}/respond |
 | Comunicaciones | `/api/v1/communications` | GET /templates, POST /send, GET /log |
 | Reporting | `/api/v1/reports` | GET /dashboard, GET /funnel, GET /metrics |
 | Administración | `/api/v1/admin` | CRUD users, roles, pipeline-templates, skills |
@@ -768,26 +768,23 @@ sequenceDiagram
     participant EMAIL as Email Service
     participant HM as Hiring Manager
 
-    REC ->> BE: POST /proposals body candidateIds positionId
-    BE ->> DB: Crear ClientProposal con token UUID
-    BE ->> DB: Crear ClientProposalItems por candidato
-    BE -->> REC: 201 Created url portal token
+    REC ->> BE: POST /offers body candidateId positionId salary
+    BE ->> DB: Crear JobOffer con token UUID
+    BE -->> REC: 201 Created offerId
 
-    REC ->> HM: Envia URL portal por email externo
+    REC ->> BE: POST /offers/{id}/send
+    BE ->> DB: Registrar sent_at
+    BE ->> EMAIL: Enviar propuesta al candidato
+    BE -->> REC: 200 OK enviada
 
-    HM ->> BE: GET /proposals/token/public
-    BE ->> DB: Validar token no expirado
-    BE ->> DB: Registrar viewed_at
-    BE -->> HM: Perfiles candidatos anonimizados
-
-    HM ->> BE: POST /proposals/token/feedback body decisions
-    BE ->> DB: Actualizar ClientProposalItem client_decision
+    HM ->> BE: PATCH /offers/{id}/respond body decision
+    BE ->> DB: Actualizar candidate_response
     BE ->> DB: Crear Notification para Recruiter
     BE ->> EMAIL: Enviar email notificacion a Recruiter
-    BE -->> HM: 200 OK feedback registrado
+    BE -->> HM: 200 OK respuesta registrada
 
-    REC ->> BE: GET /proposals/token/items
-    BE -->> REC: Feedback del cliente por candidato
+    REC ->> BE: GET /offers/{id}
+    BE -->> REC: Detalle y estado de la propuesta
 ```
 
 ### 7.4 Flujo de parsing de CV y enriquecimiento de perfil
@@ -887,7 +884,8 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:sqlserver://sqlserver:1433;databaseName=recruitflow
       - SPRING_DATASOURCE_USERNAME=${DB_USER}
       - SPRING_DATASOURCE_PASSWORD=${DB_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
+      - JWT_PRIVATE_KEY=${JWT_PRIVATE_KEY}
+      - JWT_PUBLIC_KEY=${JWT_PUBLIC_KEY}
       - SENDGRID_API_KEY=${SENDGRID_API_KEY}
     depends_on:
       sqlserver:

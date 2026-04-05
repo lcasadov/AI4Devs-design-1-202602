@@ -620,7 +620,7 @@ import type { Config } from 'jest'
 const config: Config = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
-  setupFilesAfterFramework: ['<rootDir>/src/test/setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/src/test/setup.ts'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|scss)$': 'identity-obj-proxy',
@@ -633,7 +633,7 @@ const config: Config = {
     '!src/main.tsx',
     '!src/test/**',
   ],
-  coverageThresholds: {
+  coverageThreshold: {
     global: { lines: 75, branches: 70, functions: 75, statements: 75 },
   },
 }
@@ -947,7 +947,34 @@ describe('pipelineStore', () => {
 
 ## 6. Tests E2E — Cypress
 
-### 6.1 Configuración
+### 6.1 Variables de entorno requeridas
+
+Los tests E2E leen credenciales de variables de entorno. Crea un fichero
+`cypress.env.json` (no commitear — añadir a `.gitignore`) o expórtalas en la
+shell antes de ejecutar Cypress:
+
+```json
+// cypress.env.json  ← ejemplo con valores ficticios, no usar en producción
+{
+  "TEST_ADMIN_EMAIL":      "admin-test@example.com",
+  "TEST_ADMIN_PASSWORD":   "change-me",
+  "TEST_RECRUITER_EMAIL":  "recruiter-test@example.com",
+  "TEST_RECRUITER_PASSWORD": "change-me",
+  "TEST_API_URL":          "http://localhost:8080/api/v1"
+}
+```
+
+En CI (GitHub Actions / Azure Pipelines) inyectarlas como secrets:
+
+```yaml
+env:
+  TEST_ADMIN_EMAIL:       ${{ secrets.TEST_ADMIN_EMAIL }}
+  TEST_ADMIN_PASSWORD:    ${{ secrets.TEST_ADMIN_PASSWORD }}
+  TEST_RECRUITER_EMAIL:   ${{ secrets.TEST_RECRUITER_EMAIL }}
+  TEST_RECRUITER_PASSWORD: ${{ secrets.TEST_RECRUITER_PASSWORD }}
+```
+
+### 6.2 Configuración
 
 ```typescript
 // cypress.config.ts
@@ -964,9 +991,11 @@ export default defineConfig({
     viewportHeight: 800,
     defaultCommandTimeout: 10000,
     env: {
-      apiUrl: 'http://localhost:8080/api/v1',
-      adminEmail: 'admin@recruitflow-test.io',
-      adminPassword: 'TestPassword123!',
+      apiUrl: process.env.TEST_API_URL ?? 'http://localhost:8080/api/v1',
+      adminEmail: process.env.TEST_ADMIN_EMAIL,
+      adminPassword: process.env.TEST_ADMIN_PASSWORD,
+      recruiterEmail: process.env.TEST_RECRUITER_EMAIL,
+      recruiterPassword: process.env.TEST_RECRUITER_PASSWORD,
     },
   },
 })
@@ -977,19 +1006,19 @@ export default defineConfig({
 Cypress.Commands.add('loginAs', (role: 'ADMIN' | 'RECRUITER') => {
   const credentials = {
     ADMIN:     { email: Cypress.env('adminEmail'),     password: Cypress.env('adminPassword') },
-    RECRUITER: { email: 'recruiter@recruitflow-test.io', password: 'TestPassword123!' },
+    RECRUITER: { email: Cypress.env('recruiterEmail'), password: Cypress.env('recruiterPassword') },
   }
+  // El servidor responde con Set-Cookie (HttpOnly + Secure).
+  // Cypress preserva la cookie automáticamente entre requests — no almacenar
+  // el token en localStorage (viola política de seguridad HttpOnly).
   cy.request('POST', `${Cypress.env('apiUrl')}/auth/login`, credentials[role])
-    .then(({ body }) => {
-      window.localStorage.setItem('rf_access_token', body.accessToken)
-    })
 })
 
 Cypress.Commands.add('seedPosition', (overrides = {}) => {
+  // La cookie HttpOnly de sesión se adjunta automáticamente por Cypress.
   cy.request({
     method: 'POST',
     url: `${Cypress.env('apiUrl')}/positions`,
-    headers: { Authorization: `Bearer ${window.localStorage.getItem('rf_access_token')}` },
     body: { title: 'Senior Java Developer', ...overrides },
   }).then(({ body }) => body.id)
 })
@@ -1114,8 +1143,8 @@ describe('Autenticación y control de acceso', () => {
 
   it('Login exitoso redirige al dashboard', () => {
     cy.visit('/login')
-    cy.findByLabelText(/email/i).type('admin@recruitflow-test.io')
-    cy.findByLabelText(/contraseña/i).type('TestPassword123!')
+    cy.findByLabelText(/email/i).type(Cypress.env('adminEmail'))
+    cy.findByLabelText(/contraseña/i).type(Cypress.env('adminPassword'))
     cy.findByRole('button', { name: /iniciar sesión/i }).click()
     cy.url().should('include', '/dashboard')
     cy.findByText('Bienvenido').should('be.visible')
@@ -1123,8 +1152,8 @@ describe('Autenticación y control de acceso', () => {
 
   it('Credenciales incorrectas muestran mensaje de error', () => {
     cy.visit('/login')
-    cy.findByLabelText(/email/i).type('admin@recruitflow-test.io')
-    cy.findByLabelText(/contraseña/i).type('WrongPassword')
+    cy.findByLabelText(/email/i).type(Cypress.env('adminEmail'))
+    cy.findByLabelText(/contraseña/i).type('wrong-password-intentional')
     cy.findByRole('button', { name: /iniciar sesión/i }).click()
     cy.findByRole('alert').should('contain', 'Email o contraseña incorrectos')
     cy.url().should('include', '/login')
@@ -1139,8 +1168,9 @@ describe('Autenticación y control de acceso', () => {
 
   it('Token expirado redirige al login con mensaje de sesión caducada', () => {
     cy.loginAs('RECRUITER')
-    // Forzar expiración del token
-    cy.window().then(win => win.localStorage.setItem('rf_access_token', 'expired.token.here'))
+    // Forzar expiración borrando la cookie de sesión (el token va en HttpOnly cookie,
+    // no en localStorage). Cypress permite limpiar cookies entre requests.
+    cy.clearCookie('rf_session')
     cy.visit('/vacantes')
     cy.url().should('include', '/login')
     cy.findByText(/tu sesión ha expirado/i).should('be.visible')

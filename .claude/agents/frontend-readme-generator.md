@@ -287,106 +287,99 @@ Rule: `TODO:` is not for planned features — it is exclusively for bugs or unsa
 
 ---
 
-## Stack Conventions — React 18 + Vite 5
+## Stack Conventions
 
-> These conventions are fixed for this project. Do not infer alternatives
-> from general knowledge — follow these rules exactly.
+> Detect the project's actual framework and bundler from `package.json` before
+> applying any convention below. These rules are organized by stack — only apply
+> the section that matches the detected stack. Do not assume React or Vite if
+> the project uses Vue, Angular, Svelte, or another bundler.
 
-### Variables de entorno
+### Integración con el backend
 
-- Todas las variables de entorno deben tener el prefijo `VITE_` para ser
-  accesibles en el cliente: `VITE_API_BASE_URL`, `VITE_WS_URL`, etc.
-- Nunca usar `REACT_APP_*` — este proyecto es Vite, no CRA.
-- Acceder siempre con `import.meta.env.VITE_*`, nunca con `process.env`.
-- Variables sin prefijo `VITE_` son solo para scripts de Node (build,
-  seeds) — no llegan al bundle del cliente.
+- URL base configurada en `src/config/api.ts` (o equivalente) como constante
+  exportada. Nunca hardcodear URLs en componentes o servicios.
+- Todas las peticiones deben incluir el token de autenticación en el header
+  `Authorization: Bearer <token>`. Usar un interceptor centralizado (axios
+  interceptors, fetch wrapper, etc.) — no repetirlo en cada llamada.
+- Mapeo de errores HTTP a mensajes de usuario:
+
+| Código | Causa habitual | Acción en UI |
+|--------|----------------|--------------|
+| 400 | Validación del servidor | Mostrar `error.message` del body |
+| 401 | Token expirado o inválido | Redirigir a `/login` |
+| 403 | Sin permiso (RBAC) | "No tienes permiso para esta acción" |
+| 409 | Conflicto de datos | Mostrar `error.message` del body |
+| 5xx | Error interno del servidor | Mensaje genérico; nunca exponer el body |
+
+### Autenticación y RBAC en rutas
+
+- Usar un componente o guard de ruta (e.g. `<ProtectedRoute roles={['ADMIN']}>`)
+  para envolver vistas protegidas — nunca duplicar la lógica en cada página.
+- El token JWT puede decodificarse en el cliente solo para decisiones de UI
+  (mostrar/ocultar elementos). La autorización real siempre la decide el backend.
+- En tests de componentes protegidos, mockear el contexto de autenticación con
+  el rol adecuado — no usar el token real.
+
+---
+
+### Convenciones específicas por stack
+
+#### React + Vite
+
+**Variables de entorno**
+- Prefijo obligatorio `VITE_` para variables accesibles en el cliente.
+- Acceder con `import.meta.env.VITE_*`, nunca con `process.env`.
+- Variables sin prefijo `VITE_` son solo para scripts de Node — no llegan al bundle.
 
 ```js
 // Correcto
 const baseUrl = import.meta.env.VITE_API_BASE_URL;
-
 // Incorrecto — process.env no existe en el cliente Vite
 const baseUrl = process.env.VITE_API_BASE_URL;
 ```
 
-### Integración con el backend Spring Boot
-
-- URL base configurada en `src/config/api.ts` como constante exportada.
-  Nunca hardcodear URLs en componentes o servicios.
-- Todas las peticiones deben incluir el token RBAC en el header
-  `Authorization: Bearer <token>`. Usar un interceptor de axios/fetch
-  centralizado — no hacerlo en cada llamada.
-- Mapeo de errores HTTP de Spring a mensajes de usuario:
-
-| Código Spring | Causa habitual | Mensaje al usuario |
-|--------------|----------------|-------------------|
-| 400 | Validación Bean Validation | Mostrar `error.message` del body |
-| 401 | Token expirado o inválido | Redirigir a `/login` |
-| 403 | Rol sin permiso (RBAC) | "No tienes permiso para esta acción" |
-| 409 | Conflicto (hora ya ocupada) | Mostrar `error.message` del body |
-| 5xx | Error interno del servidor | Mensaje genérico, loguear en servicio de observabilidad |
-
-- Nunca exponer en UI el body de errores 5xx — puede contener stack
-  traces de Spring con rutas internas.
-
-### WhatsApp webhook — consideraciones frontend
-
-- El bot de WhatsApp opera en el backend (parser de comandos de texto).
-  El frontend no interactúa directamente con el webhook.
-- Si hay una vista de administración para ver el log de mensajes
-  WhatsApp, consume la API REST del backend — nunca el webhook
-  directamente.
-
-### Autenticación y RBAC en rutas
-
-- Usar un componente `<ProtectedRoute roles={['ADMIN']}>` para envolver
-  vistas protegidas — nunca duplicar la lógica de verificación de rol
-  en cada página.
-- El token JWT contiene los roles; decodificarlo en el cliente solo para
-  decisiones de UI (mostrar/ocultar elementos). La autorización real
-  siempre la decide el backend.
-- En tests unitarios de componentes protegidos, mockear el contexto de
-  autenticación con el rol adecuado — no el token real.
-
-```jsx
-// Correcto — mock del contexto de auth en tests
-render(
-  <AuthContext.Provider value={{ user: { roles: ['ADMIN'] }, token: 'mock' }}>
-    <AdminPanel />
-  </AuthContext.Provider>
-);
-```
-
-### Vite — alias de importación
-
+**Alias de importación**
 - Configurar `@/` como alias de `src/` en `vite.config.ts`.
-- Usar siempre `@/` para imports internos — nunca rutas relativas con
-  más de un nivel (`../../`).
+- Usar siempre `@/` para imports internos — nunca rutas relativas con más de un nivel.
 
 ```ts
 // vite.config.ts
-resolve: {
-  alias: { '@': path.resolve(__dirname, './src') }
-}
+resolve: { alias: { '@': path.resolve(__dirname, './src') } }
 
-// Correcto
-import { useReserva } from '@/hooks/useReserva';
-
-// Incorrecto
-import { useReserva } from '../../hooks/useReserva';
+import { useAuth } from '@/hooks/useAuth'; // correcto
+import { useAuth } from '../../hooks/useAuth'; // incorrecto
 ```
 
-### MSW en desarrollo vs tests
+**MSW en desarrollo vs tests**
 
 | Contexto | Worker | Cuándo se activa |
 |----------|--------|-----------------|
-| Tests Jest/RTL | `msw/node` (setupServer) | Siempre en suite de tests |
+| Tests (Vitest/Jest + RTL) | `msw/node` (setupServer) | Siempre en suite de tests |
 | Dev local sin backend | `msw/browser` (service worker) | Solo si `VITE_MSW_ENABLED=true` |
 | Producción / CI con backend real | No se activa | Por defecto |
 
-- El service worker de MSW para desarrollo se registra en `src/mocks/browser.ts`.
-- Nunca activar `msw/browser` en producción — verificar con
-  `import.meta.env.DEV` antes de registrar el worker.
+- Nunca activar `msw/browser` en producción — verificar con `import.meta.env.DEV`.
+
+#### Vue 3 + Vite
+
+- Variables de entorno: mismo prefijo `VITE_` e `import.meta.env.*`.
+- Alias `@/` → `src/` en `vite.config.ts`.
+- Rutas protegidas mediante navigation guards en `vue-router` (`router.beforeEach`).
+- MSW: mismo patrón que React+Vite.
+
+#### Angular
+
+- Variables de entorno mediante `src/environments/environment.ts` y
+  `environment.prod.ts` — no usar `process.env` directamente.
+- Rutas protegidas con `CanActivate` guards.
+- HTTP interceptors de Angular para añadir el token de autenticación.
+
+#### Svelte / SvelteKit
+
+- Variables de entorno: prefijo `PUBLIC_` para variables expuestas al cliente
+  (`$env/static/public`). Variables privadas solo en código de servidor.
+- Rutas protegidas con hooks de servidor (`handle` en `hooks.server.ts`).
+- Alias `$lib` → `src/lib` (configuración por defecto de SvelteKit).
 
 ---
 
@@ -724,7 +717,7 @@ Examples of what to record:
 
 # Persistent Agent Memory
 
-You have a persistent, file-based memory system at `C:\Users\Luis\.claude\agent-memory\frontend-readme-generator\`. This directory already exists — write to it directly with the Write tool (do not run mkdir or check for its existence).
+You have a persistent, file-based memory system at `.claude/agent-memory/frontend-readme-generator/`. This directory already exists — write to it directly with the Write tool (do not run mkdir or check for its existence).
 
 You should build up this memory system over time so that future conversations can have a complete picture of who the user is, how they'd like to collaborate with you, what behaviors to avoid or repeat, and the context behind the work the user gives you.
 

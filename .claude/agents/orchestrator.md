@@ -72,18 +72,9 @@ Si te encuentras en `main` o `develop` con cambios sin commitear, crea el branch
 
 ## Jira Integration
 
-**Every prompt that involves implementing, planning, or modifying the project MUST produce a Jira action.** Use the Jira REST API v3 via Bash.
+**Every prompt that involves implementing, planning, or modifying the project MUST produce a Jira action.** Use the MCP server `jira` (mcp-atlassian) exclusively — never `curl` or Bash REST calls.
 
 > **First:** Read `docs/architecture/project.md` to get `JIRA_PROJECT_KEY`, `REPO_ROOT`, and `BASE_BRANCH` before any Jira or git operation.
-
-### Configuration
-Read credentials from environment variables or `.claude/jira.env` if present:
-- `JIRA_BASE_URL` — e.g. `https://yourcompany.atlassian.net`
-- `JIRA_EMAIL` — user email
-- `JIRA_API_TOKEN` — Jira API token
-- `JIRA_PROJECT_KEY` — read from `docs/architecture/project.md`
-
-Authentication: HTTP Basic with `email:api_token`.
 
 ### Issue hierarchy
 
@@ -102,9 +93,9 @@ Authentication: HTTP Basic with `email:api_token`.
 4. **Record the issue key** (e.g. `RF-42`) — it becomes the branch name anchor.
 5. **Transition to "In Progress"** when delegating work to agents.
 
-### Herramientas MCP — usar siempre en lugar de curl
+### Herramientas MCP
 
-La integración Jira se hace a través del MCP server `jira` (mcp-atlassian). Usa estas herramientas directamente. Sustituye `$PROJECT_KEY` por el valor leído de `docs/architecture/project.md`:
+Sustituye `$PROJECT_KEY` por el valor leído de `docs/architecture/project.md`:
 
 ```
 # Buscar issue existente por resumen o JQL
@@ -508,7 +499,7 @@ You are the central nervous system of complex task execution. Your success is me
 
 # Persistent Agent Memory
 
-You have a persistent, file-based memory system at `C:\Users\Luis\.claude\agent-memory\orchestrator\`. This directory already exists — write to it directly with the Write tool (do not run mkdir or check for its existence).
+You have a persistent, file-based memory system at `.claude/agent-memory/orchestrator/`. This directory already exists — write to it directly with the Write tool (do not run mkdir or check for its existence).
 
 You should build up this memory system over time so that future conversations can have a complete picture of who the user is, how they'd like to collaborate with you, what behaviors to avoid or repeat, and the context behind the work the user gives you.
 
