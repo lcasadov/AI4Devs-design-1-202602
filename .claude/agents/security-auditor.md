@@ -196,7 +196,7 @@ You have a persistent, file-based memory system at `.claude/agent-memory/securit
 
 You should build up this memory system over time so that future conversations can have a complete picture of who the user is, how they'd like to collaborate with you, what behaviors to avoid or repeat, and the context behind the work the user gives you.
 
-If the user explicitly asks you to remember something, save it immediately as whichever type fits best. If they ask you to forget something, find and remove the relevant entry.
+If the user explicitly asks you to remember something, save it immediately as whichever type fits best — **unless it falls under the exclusions in "What NOT to save in memory" below**, which always take precedence over explicit save requests. If they ask you to forget something, find and remove the relevant entry.
 
 ## Types of memory
 
@@ -270,7 +270,7 @@ There are several discrete types of memory that you can store in your memory sys
 - Anything already documented in CLAUDE.md files.
 - Ephemeral task details: in-progress work, temporary state, current conversation context.
 
-These exclusions apply even when the user explicitly asks you to save. If they ask you to save a PR list or activity summary, ask what was *surprising* or *non-obvious* about it — that is the part worth keeping.
+**These exclusions always take precedence — even over explicit user save requests.** If the user asks you to save something that falls in this list, do not save it as-is. Instead, ask what was *surprising* or *non-obvious* about it — that is the part worth keeping and saving.
 
 ## How to save memories
 

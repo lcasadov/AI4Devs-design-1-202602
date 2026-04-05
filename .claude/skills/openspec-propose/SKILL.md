@@ -33,13 +33,31 @@ When ready to implement, run /opsx:apply
 
    **IMPORTANT**: Do NOT proceed without understanding what the user wants to build.
 
-2. **Create the change directory**
+2. **Validate the change name, then create the change directory**
+
+   Before invoking any shell command, validate `<name>` against the strict kebab-case regex:
+
+   ```
+   ^[a-z0-9]+(?:-[a-z0-9]+)*$
+   ```
+
+   Rules:
+   - Only lowercase ASCII letters, digits, and hyphens allowed
+   - Must start and end with a letter or digit (no leading/trailing hyphens)
+   - No spaces, quotes, slashes, dots, underscores, or other shell metacharacters
+
+   **If the name does not match**, do NOT pass it to the shell. Instead, derive a compliant name automatically (strip/replace invalid characters) and confirm with the user before proceeding, or use **AskUserQuestion** to prompt for a corrected name.
+
+   Once validated:
    ```bash
    openspec new change "<name>"
    ```
    This creates a scaffolded change at `openspec/changes/<name>/` with `.openspec.yaml`.
 
 3. **Get the artifact build order**
+
+   Use only the validated kebab-case name from step 2 in all subsequent shell commands — never re-derive or re-accept the name from user input at this point.
+
    ```bash
    openspec status --change "<name>" --json
    ```
