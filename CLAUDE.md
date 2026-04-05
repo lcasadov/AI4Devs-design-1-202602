@@ -84,7 +84,7 @@ Si te encuentras en `main` o `develop` con cambios sin commitear, crea el branch
 
 ## Jira Integration
 
-**Every prompt that involves implementing, planning, or modifying the project MUST produce a Jira action.** Use the MCP server `jira` (mcp-atlassian) exclusively — never `curl` or Bash REST calls.
+**Every prompt that involves implementing, planning, or modifying the project MUST produce a Jira action** via the MCP server `jira` (mcp-atlassian) — never `curl` or Bash REST calls. If the MCP `jira` service is unreachable, the action must be queued locally (see **MCP offline fallback** below) before proceeding with any git or implementation work.
 
 > **First:** Read `docs/architecture/project.md` to get `JIRA_PROJECT_KEY`, `REPO_ROOT`, and `BASE_BRANCH` before any Jira or git operation.
 
@@ -153,7 +153,23 @@ jira_log_work(issue_key="$PROJECT_KEY-XX", time_spent="1h 30m", comment="Planifi
 jira_get_issue(issue_key="$PROJECT_KEY-XX")
 ```
 
-Si el MCP no está disponible, imprime un bloque de advertencia con las acciones que habrían ocurrido y continúa con el flujo git.
+### MCP offline fallback
+
+Si el MCP `jira` (mcp-atlassian) no está disponible:
+
+1. **Registra la acción en cola local** — crea o añade al fichero `.claude/jira-offline-queue.json` una entrada con:
+   ```json
+   {
+     "timestamp": "<ISO-8601>",
+     "operator": "<agent-name>",
+     "action": "<create_issue|transition|add_comment|log_work>",
+     "payload": { "<parámetros completos de la llamada MCP>" },
+     "tag": "JIRA_OFFLINE_QUEUE"
+   }
+   ```
+2. **Solo si existe la entrada en cola**, continúa con el flujo git e implementación.
+3. **Al restaurarse la conectividad**, reintenta automáticamente cada entrada de `.claude/jira-offline-queue.json` contra el MCP `jira` en orden, eliminando cada entrada tras confirmar éxito.
+4. **Nunca omitas la entrada en cola** — si no puedes escribir el fichero, detente y notifica al usuario antes de continuar.
 
 ---
 
@@ -527,7 +543,7 @@ You have a persistent, file-based memory system at `.claude/agent-memory/orchest
 
 You should build up this memory system over time so that future conversations can have a complete picture of who the user is, how they'd like to collaborate with you, what behaviors to avoid or repeat, and the context behind the work the user gives you.
 
-If the user explicitly asks you to remember something, save it immediately as whichever type fits best. If they ask you to forget something, find and remove the relevant entry.
+If the user explicitly asks you to remember something, save it immediately as whichever type fits best — **unless it falls under the exclusions in "What NOT to save in memory" below**, which always take precedence over explicit save requests. If they ask you to forget something, find and remove the relevant entry.
 
 ## Types of memory
 
@@ -601,7 +617,7 @@ There are several discrete types of memory that you can store in your memory sys
 - Anything already documented in CLAUDE.md files.
 - Ephemeral task details: in-progress work, temporary state, current conversation context.
 
-These exclusions apply even when the user explicitly asks you to save. If they ask you to save a PR list or activity summary, ask what was *surprising* or *non-obvious* about it — that is the part worth keeping.
+**These exclusions always take precedence — even over explicit user save requests.** If the user asks you to save something that falls in this list, do not save it as-is. Instead, ask what was *surprising* or *non-obvious* about it — that is the part worth keeping and saving.
 
 ## How to save memories
 

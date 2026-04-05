@@ -8,9 +8,19 @@
 
 ## Configuración del proyecto (leída por los agentes)
 
+> **`REPO_ROOT`** debe resolverse en tiempo de ejecución — no está hardcodeado aquí.
+> Los agentes deben obtenerlo mediante:
+> ```bash
+> REPO_ROOT="${REPO_ROOT:-$(git rev-parse --show-toplevel)}"
+> ```
+> En CI o entornos sin `.git`, exportar la variable antes de invocar el agente:
+> ```bash
+> export REPO_ROOT=/ruta/al/repositorio
+> ```
+
 | Variable | Valor |
 |---|---|
-| `REPO_ROOT` | `C:/proyectos/AI4Devs-design-1-202602` |
+| `REPO_ROOT` | `${REPO_ROOT}` — raíz del repositorio (resolver vía env var o `git rev-parse --show-toplevel`) |
 | `BASE_BRANCH` | `main` |
 | `JIRA_PROJECT_KEY` | `RF` |
 | `PROJECT_NAME` | `recruitflow` |
