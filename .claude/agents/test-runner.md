@@ -95,8 +95,8 @@ Cuando un test falla por un **defecto en el código** (no en el test), debes cre
 
 | Tipo de fichero con el defecto | Agente responsable |
 |-------------------------------|-------------------|
-| Código backend (Java/server-side) | `backend-readme-architect` |
-| Código frontend (JS/TS/React/Vue) | `frontend-readme-generator` |
+| Código backend (Java/server-side) | `backend-architect` |
+| Código frontend (JS/TS/React/Vue) | `frontend-engineer` |
 | Pipelines CI/CD / IaC | `devops-engineer` |
 | Configuración de seguridad / auth | `security-auditor` |
 
