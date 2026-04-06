@@ -3,7 +3,19 @@
     "allow": [
       "Bash(grep -rn \"\\\\.claude/agents/project\\\\.md\\\\|padel-api-rest\\\\|padel_api_rest\\\\|PADEL\" \"C:\\\\proyectos\\\\AI4Devs-design-1-202602\\\\.claude\\\\agents\" --include=\"*.md\")",
       "Bash(python3:*)",
-      "Bash(grep -n \"agent-memory\\\\|Users\\\\\\\\Luis\\\\|AGENT_MEMORY\" \"C:/proyectos/AI4Devs-design-1-202602/CLAUDE.md\")"
+      "Bash(grep -n \"agent-memory\\\\|Users\\\\\\\\Luis\\\\|AGENT_MEMORY\" \"C:/proyectos/AI4Devs-design-1-202602/CLAUDE.md\")",
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 branch --list \"feature/RF-1-project-scaffold\")",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(export GIT_AUTHOR_NAME=orquestadoria)",
+      "Bash(export GIT_AUTHOR_EMAIL=orquestadoria@users.noreply.github.com)",
+      "Bash(export GIT_COMMITTER_NAME=orquestadoria)",
+      "Bash(export GIT_COMMITTER_EMAIL=orquestadoria@users.noreply.github.com)",
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 add recruitflow-frontend/)",
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 rm -r --cached recruitflow-frontend/dist/)",
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 add recruitflow-frontend/.gitignore)",
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 commit -m \"chore\\(RF-1\\): add .gitignore and remove dist/ from tracking:*)",
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 log --oneline -3)"
     ]
   }
 }

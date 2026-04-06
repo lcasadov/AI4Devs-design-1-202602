@@ -1,20 +1,49 @@
 schema: spec-driven
 
-# Project context (optional)
-# This is shown to AI when creating artifacts.
-# Add your tech stack, conventions, style guides, domain knowledge, etc.
-# Example:
-#   context: |
-#     Tech stack: TypeScript, React, Node.js
-#     We use conventional commits
-#     Domain: e-commerce platform
+context: |
+  Project: RecruitFlow — ATS (Applicant Tracking System) para empresas de selección de personal.
+  Gestiona el ciclo completo de reclutamiento: vacantes, candidaturas, pipeline de selección, entrevistas, ofertas y onboarding.
 
-# Per-artifact rules (optional)
-# Add custom rules for specific artifacts.
-# Example:
-#   rules:
-#     proposal:
-#       - Keep proposals under 500 words
-#       - Always include a "Non-goals" section
-#     tasks:
-#       - Break tasks into chunks of max 2 hours
+  Tech stack:
+    Backend:  Java 21 + Spring Boot 3.3 (arquitectura hexagonal, DDD, modular monolith)
+    Frontend: React 18 + Vite + TypeScript (arquitectura hexagonal)
+    Auth:     Spring Security + JWT + OAuth2
+    DB:       SQL Server (prod) / H2 (test)
+    API:      REST, documentada con SpringDoc OpenAPI 3.0
+    Build:    Maven (backend), npm/Vite (frontend)
+
+  Architecture:
+    - Arquitectura hexagonal estricta: domain → application → infrastructure
+    - Módulos de negocio autónomos: vacantes, candidatos, pipeline, entrevistas, usuarios
+    - AOP para cross-cutting concerns (logging, auditoría, seguridad)
+    - Domain-Driven Design: el modelo de dominio dirige el diseño
+
+  Conventions:
+    - Commits: Conventional Commits (feat, fix, refactor, test, docs, chore)
+    - Branch: feature/<PROJECT_KEY>-<id>-<slug>, bugfix/..., task/...
+    - Java: Google Java Style Guide + Checkstyle
+    - TypeScript: ESLint + Prettier, functional components, hooks
+    - API responses: { data, error: { code, message, details, timestamp } }
+
+  Key paths (from docs/architecture/project.md):
+    BACKEND_DIR:  recruitflow-api-rest
+    FRONTEND_DIR: recruitflow-frontend
+    API spec:     openspec/specs/api/openapi.yaml (también en docs/architecture/openapi.yaml)
+    JIRA_KEY:     RF
+    BASE_BRANCH:  main
+
+rules:
+  proposal:
+    - Keep proposals under 400 words
+    - Always include a "No incluido en este cambio" section
+    - Reference the affected modules explicitly
+  design:
+    - Each decision must include alternatives considered
+    - Include migration plan if existing data is affected
+  tasks:
+    - Break tasks into chunks of max 4 hours
+    - Group by layer: Backend / Frontend / Testing
+    - Task IDs must match Jira keys where possible
+  specs:
+    - Each requirement as a SHALL statement
+    - Include at least one BDD scenario (GIVEN/WHEN/THEN) per requirement
