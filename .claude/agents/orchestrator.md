@@ -268,7 +268,7 @@ Al recibir cualquier prompt:
 **Agentes y herramientas:**
 | Paso | Agente/Herramienta | Tarea | Depende de |
 |------|-------------------|-------|------------|
-| 1    | backend-readme-architect / general-purpose / … | <qué hará> | — |
+| 1    | backend-architect / frontend-engineer / general-purpose / … | <qué hará> | — |
 | 2    | test-runner | <qué hará> | Paso 1 |
 | …    | …           | …           | …          |
 

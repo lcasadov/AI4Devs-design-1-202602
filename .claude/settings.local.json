@@ -17,6 +17,7 @@
       "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 commit -m \"chore\\(RF-1\\): add .gitignore and remove dist/ from tracking:*)",
       "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 log --oneline -3)",
       "Bash(gh api:*)",
+      "Bash(gh pr:*)",
       "Bash(for f:*)",
       "Bash(do echo:*)",
       "Bash(node --check \"C:\\\\proyectos\\\\AI4Devs-design-1-202602\\\\.claude\\\\hooks\\\\context-monitor.js\")",
@@ -30,11 +31,11 @@
       "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-frontend/src/candidatos/infrastructure/api/candidatosApi.ts)",
       "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-frontend/src/pipeline/ recruitflow-frontend/src/usuarios/ recruitflow-frontend/src/vacantes/)",
       "Bash(mvn compile:*)",
-      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-api-rest/)",
-      "Bash(java -version)",
       "Bash(mvn -version)",
       "Bash(mvn test-compile:*)",
       "Bash(mvn dependency:build-classpath -q)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-api-rest/)",
+      "Bash(java -version)",
       "Bash(jar tf:*)",
       "Bash(jar xf:*)",
       "Bash(javap -p com/tngtech/archunit/library/Architectures.class)",
@@ -54,7 +55,8 @@
       "Bash(mvn -f C:/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml dependency:resolve -Dartifact=org.springframework.boot:spring-boot-starter-parent:3.3.10:pom)",
       "Bash(mvn -f C:/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml -U dependency:resolve -Dartifact=org.springframework.boot:spring-boot-starter-parent:3.3.6:pom)",
       "Bash(mvn -f recruitflow-api-rest/pom.xml test-compile -q)",
-      "Bash(echo \"EXIT:$?\")"
+      "Bash(echo \"EXIT:$?\")",
+      "Bash(mv .claude/agents/*.md .claude/agents/*.md)"
     ]
   }
 }
