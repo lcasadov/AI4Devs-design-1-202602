@@ -40,7 +40,21 @@
       "Bash(javap -p com/tngtech/archunit/library/Architectures.class)",
       "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff -- recruitflow-frontend/)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(mvn -f /c/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml compile -q)",
+      "Bash(mvn -f /c/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml test-compile -q)",
+      "Bash(npm --prefix /c/proyectos/AI4Devs-design-1-202602/recruitflow-frontend run build)",
+      "Bash(mvn -f /c/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml test)",
+      "Bash(xargs grep:*)",
+      "Bash(ls \"C:/proyectos/AI4Devs-design-1-202602/recruitflow-frontend/.env\"*)",
+      "Bash(npm --prefix recruitflow-frontend run build)",
+      "Bash(mvn -f recruitflow-api-rest/pom.xml test)",
+      "Bash(mvn -f recruitflow-api-rest/pom.xml compile -q)",
+      "Bash(curl -s https://repo.maven.apache.org/maven2/org/springframework/boot/spring-boot-starter-parent/maven-metadata.xml)",
+      "Bash(mvn -f C:/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml dependency:resolve -Dartifact=org.springframework.boot:spring-boot-starter-parent:3.3.10:pom)",
+      "Bash(mvn -f C:/proyectos/AI4Devs-design-1-202602/recruitflow-api-rest/pom.xml -U dependency:resolve -Dartifact=org.springframework.boot:spring-boot-starter-parent:3.3.6:pom)",
+      "Bash(mvn -f recruitflow-api-rest/pom.xml test-compile -q)",
+      "Bash(echo \"EXIT:$?\")"
     ]
   }
 }
