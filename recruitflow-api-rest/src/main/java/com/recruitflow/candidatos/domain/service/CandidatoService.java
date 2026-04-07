@@ -5,9 +5,9 @@ import com.recruitflow.candidatos.application.dto.CandidatoResponseDto;
 import com.recruitflow.candidatos.domain.model.Candidato;
 import com.recruitflow.candidatos.domain.port.in.CandidatoUseCase;
 import com.recruitflow.candidatos.domain.port.out.CandidatoRepository;
+import com.recruitflow.shared.domain.exception.NotFoundException;
 import java.time.Instant;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -44,7 +44,7 @@ public class CandidatoService implements CandidatoUseCase {
   @Override
   public CandidatoResponseDto obtenerPorId(UUID companyId, UUID id) {
     Candidato candidato = candidatoRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Candidato not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Candidato", id.toString()));
     return toDto(candidato);
   }
 
@@ -60,7 +60,7 @@ public class CandidatoService implements CandidatoUseCase {
   @Override
   public CandidatoResponseDto actualizar(UUID companyId, UUID id, CandidatoRequestDto request) {
     Candidato existing = candidatoRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Candidato not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Candidato", id.toString()));
     applyUpdate(existing, request);
     Candidato saved = candidatoRepository.save(existing);
     return toDto(saved);
@@ -70,7 +70,7 @@ public class CandidatoService implements CandidatoUseCase {
   @Override
   public void anonimizar(UUID companyId, UUID id) {
     Candidato existing = candidatoRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Candidato not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Candidato", id.toString()));
     existing.setFullName("ANONYMIZED");
     existing.setEmail("anonymized-" + id + "@redacted.invalid");
     existing.setPhone(null);

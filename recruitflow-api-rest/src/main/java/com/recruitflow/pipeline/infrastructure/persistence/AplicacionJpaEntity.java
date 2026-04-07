@@ -28,6 +28,9 @@ public class AplicacionJpaEntity {
   @Column(name = "id", updatable = false, nullable = false)
   private UUID id;
 
+  @Column(name = "company_id", nullable = false)
+  private UUID companyId;
+
   @Column(name = "position_id", nullable = false)
   private UUID positionId;
 

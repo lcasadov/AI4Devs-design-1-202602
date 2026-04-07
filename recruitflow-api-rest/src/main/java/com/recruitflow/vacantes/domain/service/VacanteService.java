@@ -5,9 +5,9 @@ import com.recruitflow.vacantes.application.dto.VacanteResponseDto;
 import com.recruitflow.vacantes.domain.model.Vacante;
 import com.recruitflow.vacantes.domain.port.in.VacanteUseCase;
 import com.recruitflow.vacantes.domain.port.out.VacanteRepository;
+import com.recruitflow.shared.domain.exception.NotFoundException;
 import java.time.Instant;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -45,7 +45,7 @@ public class VacanteService implements VacanteUseCase {
   @Override
   public VacanteResponseDto obtenerPorId(UUID companyId, UUID id) {
     Vacante vacante = vacanteRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Vacante not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Vacante", id.toString()));
     return toDto(vacante);
   }
 
@@ -61,7 +61,7 @@ public class VacanteService implements VacanteUseCase {
   @Override
   public VacanteResponseDto actualizar(UUID companyId, UUID id, VacanteRequestDto request) {
     Vacante existing = vacanteRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Vacante not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Vacante", id.toString()));
     applyUpdate(existing, request);
     Vacante saved = vacanteRepository.save(existing);
     return toDto(saved);
@@ -71,7 +71,7 @@ public class VacanteService implements VacanteUseCase {
   @Override
   public void eliminar(UUID companyId, UUID id) {
     vacanteRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Vacante not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Vacante", id.toString()));
     vacanteRepository.deleteById(id);
   }
 

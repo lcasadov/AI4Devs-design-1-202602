@@ -16,6 +16,7 @@ import java.util.UUID;
 public class Aplicacion {
 
   private UUID id;
+  private UUID companyId;
   private UUID positionId;
   private UUID candidateId;
   private UUID recruiterId;
@@ -51,6 +52,12 @@ public class Aplicacion {
 
   /** @param id the identifier to set */
   public void setId(UUID id) { this.id = id; }
+
+  /** @return the tenant company identifier */
+  public UUID getCompanyId() { return companyId; }
+
+  /** @param companyId the tenant company identifier to set */
+  public void setCompanyId(UUID companyId) { this.companyId = companyId; }
 
   /** @return the position identifier */
   public UUID getPositionId() { return positionId; }

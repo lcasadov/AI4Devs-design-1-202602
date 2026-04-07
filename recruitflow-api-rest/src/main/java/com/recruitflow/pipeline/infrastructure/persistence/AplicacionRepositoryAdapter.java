@@ -41,6 +41,12 @@ public class AplicacionRepositoryAdapter implements AplicacionRepository {
 
   /** {@inheritDoc} */
   @Override
+  public Optional<Aplicacion> findByIdAndCompanyId(UUID id, UUID companyId) {
+    return jpaRepository.findByIdAndCompanyId(id, companyId).map(this::toDomain);
+  }
+
+  /** {@inheritDoc} */
+  @Override
   public List<Aplicacion> findAllByPositionId(UUID positionId) {
     return jpaRepository.findAllByPositionId(positionId).stream()
         .map(this::toDomain)
@@ -54,6 +60,7 @@ public class AplicacionRepositoryAdapter implements AplicacionRepository {
   private AplicacionJpaEntity toJpa(Aplicacion a) {
     AplicacionJpaEntity e = new AplicacionJpaEntity();
     e.setId(a.getId());
+    e.setCompanyId(a.getCompanyId());
     e.setPositionId(a.getPositionId());
     e.setCandidateId(a.getCandidateId());
     e.setRecruiterId(a.getRecruiterId());
@@ -70,6 +77,7 @@ public class AplicacionRepositoryAdapter implements AplicacionRepository {
   private Aplicacion toDomain(AplicacionJpaEntity e) {
     Aplicacion a = new Aplicacion();
     a.setId(e.getId());
+    a.setCompanyId(e.getCompanyId());
     a.setPositionId(e.getPositionId());
     a.setCandidateId(e.getCandidateId());
     a.setRecruiterId(e.getRecruiterId());

@@ -5,8 +5,8 @@ import com.recruitflow.usuarios.application.dto.UsuarioResponseDto;
 import com.recruitflow.usuarios.domain.model.Usuario;
 import com.recruitflow.usuarios.domain.port.in.UsuarioUseCase;
 import com.recruitflow.usuarios.domain.port.out.UsuarioRepository;
+import com.recruitflow.shared.domain.exception.NotFoundException;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
@@ -40,7 +40,7 @@ public class UsuarioService implements UsuarioUseCase {
   @Override
   public UsuarioResponseDto obtenerPorId(UUID companyId, UUID id) {
     Usuario usuario = usuarioRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Usuario not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Usuario", id.toString()));
     return toDto(usuario);
   }
 
@@ -56,7 +56,7 @@ public class UsuarioService implements UsuarioUseCase {
   @Override
   public UsuarioResponseDto actualizar(UUID companyId, UUID id, UsuarioRequestDto request) {
     Usuario existing = usuarioRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Usuario not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Usuario", id.toString()));
     applyUpdate(existing, request);
     Usuario saved = usuarioRepository.save(existing);
     return toDto(saved);
@@ -66,7 +66,7 @@ public class UsuarioService implements UsuarioUseCase {
   @Override
   public void desactivar(UUID companyId, UUID id) {
     Usuario existing = usuarioRepository.findByCompanyIdAndId(companyId, id)
-        .orElseThrow(() -> new NoSuchElementException("Usuario not found: " + id));
+        .orElseThrow(() -> new NotFoundException("Usuario", id.toString()));
     existing.setActive(false);
     usuarioRepository.save(existing);
   }

@@ -27,6 +27,15 @@ public interface AplicacionRepository {
   Optional<Aplicacion> findById(UUID id);
 
   /**
+   * Finds an application by its id scoped to a specific tenant.
+   *
+   * @param id        the application's unique identifier
+   * @param companyId the tenant identifier
+   * @return an Optional containing the application if found and belongs to the tenant
+   */
+  Optional<Aplicacion> findByIdAndCompanyId(UUID id, UUID companyId);
+
+  /**
    * Returns all applications for a given position.
    *
    * @param positionId the position's unique identifier
