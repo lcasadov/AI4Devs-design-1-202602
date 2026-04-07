@@ -3,10 +3,14 @@ package com.recruitflow.pipeline.domain.service;
 import com.recruitflow.pipeline.application.dto.AplicacionRequestDto;
 import com.recruitflow.pipeline.application.dto.AplicacionResponseDto;
 import com.recruitflow.pipeline.application.dto.CambioEtapaRequestDto;
+import com.recruitflow.pipeline.domain.model.Aplicacion;
 import com.recruitflow.pipeline.domain.port.in.PipelineUseCase;
 import com.recruitflow.pipeline.domain.port.out.AplicacionRepository;
+import java.time.Instant;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 /**
@@ -32,24 +36,67 @@ public class PipelineService implements PipelineUseCase {
   /** {@inheritDoc} */
   @Override
   public AplicacionResponseDto crear(UUID companyId, AplicacionRequestDto request) {
-    throw new UnsupportedOperationException("TODO: implement crear aplicacion");
+    Aplicacion aplicacion = toEntity(request);
+    Aplicacion saved = aplicacionRepository.save(aplicacion);
+    return toDto(saved);
   }
 
   /** {@inheritDoc} */
   @Override
   public AplicacionResponseDto obtenerPorId(UUID companyId, UUID id) {
-    throw new UnsupportedOperationException("TODO: implement obtenerPorId aplicacion");
+    Aplicacion aplicacion = aplicacionRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("Aplicacion not found: " + id));
+    return toDto(aplicacion);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<AplicacionResponseDto> listarPorPosicion(UUID companyId, UUID positionId) {
-    throw new UnsupportedOperationException("TODO: implement listarPorPosicion");
+    return aplicacionRepository.findAllByPositionId(positionId).stream()
+        .map(this::toDto)
+        .collect(Collectors.toList());
   }
 
   /** {@inheritDoc} */
   @Override
   public AplicacionResponseDto cambiarEtapa(UUID companyId, UUID id, CambioEtapaRequestDto request) {
-    throw new UnsupportedOperationException("TODO: implement cambiarEtapa — log to StageHistory");
+    Aplicacion existing = aplicacionRepository.findById(id)
+        .orElseThrow(() -> new NoSuchElementException("Aplicacion not found: " + id));
+    existing.setStage(request.stage());
+    existing.setDiscardReason(request.discardReason());
+    existing.setUpdatedAt(Instant.now());
+    Aplicacion saved = aplicacionRepository.save(existing);
+    return toDto(saved);
+  }
+
+  // -------------------------------------------------------------------------
+  // Private helpers — mapping between domain entity and DTO
+  // -------------------------------------------------------------------------
+
+  private Aplicacion toEntity(AplicacionRequestDto request) {
+    Aplicacion a = new Aplicacion();
+    a.setPositionId(request.positionId());
+    a.setCandidateId(request.candidateId());
+    a.setRecruiterId(request.recruiterId());
+    a.setSource(request.source());
+    a.setStage("shortlisted");
+    a.setCreatedAt(Instant.now());
+    a.setUpdatedAt(Instant.now());
+    return a;
+  }
+
+  private AplicacionResponseDto toDto(Aplicacion a) {
+    return new AplicacionResponseDto(
+        a.getId(),
+        a.getPositionId(),
+        a.getCandidateId(),
+        a.getRecruiterId(),
+        a.getStage(),
+        a.getMatchScore(),
+        a.getDiscardReason(),
+        a.getSource(),
+        a.getCreatedAt(),
+        a.getUpdatedAt()
+    );
   }
 }

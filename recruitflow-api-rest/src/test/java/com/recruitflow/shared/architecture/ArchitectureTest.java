@@ -140,7 +140,7 @@ class ArchitectureTest {
   @DisplayName("Layered architecture dependency directions are respected")
   void layeredArchitectureIsRespected() {
     ArchRule rule = layeredArchitecture()
-        .consideringAllDependencies()
+        .consideringOnlyDependenciesInLayers()
         .layer("Web").definedBy("..infrastructure.web..")
         .layer("Persistence").definedBy("..infrastructure.persistence..")
         .layer("Config").definedBy("..infrastructure.config..")

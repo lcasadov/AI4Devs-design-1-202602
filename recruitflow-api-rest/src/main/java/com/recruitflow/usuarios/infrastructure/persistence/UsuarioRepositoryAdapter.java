@@ -5,6 +5,7 @@ import com.recruitflow.usuarios.domain.port.out.UsuarioRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,18 +28,53 @@ public class UsuarioRepositoryAdapter implements UsuarioRepository {
   /** {@inheritDoc} */
   @Override
   public Usuario save(Usuario usuario) {
-    throw new UnsupportedOperationException("TODO: implement save usuario");
+    UsuarioJpaEntity entity = toJpa(usuario);
+    UsuarioJpaEntity saved = jpaRepository.save(entity);
+    return toDomain(saved);
   }
 
   /** {@inheritDoc} */
   @Override
   public Optional<Usuario> findByCompanyIdAndId(UUID companyId, UUID id) {
-    throw new UnsupportedOperationException("TODO: implement findByCompanyIdAndId usuario");
+    return jpaRepository.findByCompanyIdAndId(companyId, id)
+        .map(this::toDomain);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<Usuario> findAllByCompanyId(UUID companyId) {
-    throw new UnsupportedOperationException("TODO: implement findAllByCompanyId usuario");
+    return jpaRepository.findAllByCompanyId(companyId).stream()
+        .map(this::toDomain)
+        .collect(Collectors.toList());
+  }
+
+  // -------------------------------------------------------------------------
+  // Private mapping helpers
+  // -------------------------------------------------------------------------
+
+  private UsuarioJpaEntity toJpa(Usuario u) {
+    UsuarioJpaEntity e = new UsuarioJpaEntity();
+    e.setId(u.getId());
+    e.setCompanyId(u.getCompanyId());
+    e.setEmail(u.getEmail());
+    e.setFullName(u.getFullName());
+    e.setRole(u.getRole());
+    e.setAvatarUrl(u.getAvatarUrl());
+    e.setActive(u.isActive());
+    e.setLastLoginAt(u.getLastLoginAt());
+    return e;
+  }
+
+  private Usuario toDomain(UsuarioJpaEntity e) {
+    Usuario u = new Usuario();
+    u.setId(e.getId());
+    u.setCompanyId(e.getCompanyId());
+    u.setEmail(e.getEmail());
+    u.setFullName(e.getFullName());
+    u.setRole(e.getRole());
+    u.setAvatarUrl(e.getAvatarUrl());
+    u.setActive(e.isActive());
+    u.setLastLoginAt(e.getLastLoginAt());
+    return u;
   }
 }
