@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller for the candidatos module.
  *
- * <p>Placeholder — full business logic is delegated to {@link CandidatoUseCase}.</p>
+ * <p>Full business logic is delegated to {@link CandidatoUseCase}.</p>
  */
 @Tag(name = "Candidatos", description = "Manage candidates in the talent pool")
 @RestController
@@ -48,10 +48,23 @@ public class CandidatoController {
   }
 
   /**
+   * Resolves the tenant company identifier from the authenticated principal.
+   *
+   * <p>TODO RF-2: extract companyId from JWT claims once the auth module is implemented:
+   * {@code return ((JwtPrincipal) authentication.getPrincipal()).getCompanyId();}</p>
+   *
+   * @return a placeholder company UUID until JWT auth is implemented
+   */
+  private UUID resolveCompanyId() {
+    // TODO RF-2: extract companyId from JWT claims
+    // String companyId = ((JwtPrincipal) authentication.getPrincipal()).getCompanyId();
+    return UUID.fromString("00000000-0000-0000-0000-000000000000");
+  }
+
+  /**
    * Creates a new candidate.
    *
-   * @param companyId tenant identifier
-   * @param request   creation request body
+   * @param request creation request body
    * @return 201 Created with the created candidate
    */
   @Operation(summary = "Create a candidate", security = @SecurityRequirement(name = "bearerAuth"))
@@ -66,16 +79,13 @@ public class CandidatoController {
   })
   @PostMapping
   public ResponseEntity<CandidatoResponseDto> crear(
-      @Parameter(description = "Tenant company UUID", required = true)
-      @RequestHeader("X-Company-Id") UUID companyId,
       @Valid @RequestBody CandidatoRequestDto request) {
-    return ResponseEntity.status(HttpStatus.CREATED).body(candidatoUseCase.crear(companyId, request));
+    return ResponseEntity.status(HttpStatus.CREATED).body(candidatoUseCase.crear(resolveCompanyId(), request));
   }
 
   /**
    * Lists all candidates for the authenticated tenant.
    *
-   * @param companyId tenant identifier
    * @return 200 OK with candidate list
    */
   @Operation(summary = "List candidates", security = @SecurityRequirement(name = "bearerAuth"))
@@ -84,17 +94,14 @@ public class CandidatoController {
       @ApiResponse(responseCode = "401", description = "Not authenticated")
   })
   @GetMapping
-  public ResponseEntity<List<CandidatoResponseDto>> listar(
-      @Parameter(description = "Tenant company UUID", required = true)
-      @RequestHeader("X-Company-Id") UUID companyId) {
-    return ResponseEntity.ok(candidatoUseCase.listar(companyId));
+  public ResponseEntity<List<CandidatoResponseDto>> listar() {
+    return ResponseEntity.ok(candidatoUseCase.listar(resolveCompanyId()));
   }
 
   /**
    * Returns a candidate by id.
    *
-   * @param companyId tenant identifier
-   * @param id        candidate's unique identifier
+   * @param id candidate's unique identifier
    * @return 200 OK or 404 if not found
    */
   @Operation(summary = "Get a candidate by id", security = @SecurityRequirement(name = "bearerAuth"))
@@ -107,19 +114,16 @@ public class CandidatoController {
   })
   @GetMapping("/{id}")
   public ResponseEntity<CandidatoResponseDto> obtenerPorId(
-      @Parameter(description = "Tenant company UUID", required = true)
-      @RequestHeader("X-Company-Id") UUID companyId,
       @Parameter(description = "Candidate UUID", required = true)
       @PathVariable UUID id) {
-    return ResponseEntity.ok(candidatoUseCase.obtenerPorId(companyId, id));
+    return ResponseEntity.ok(candidatoUseCase.obtenerPorId(resolveCompanyId(), id));
   }
 
   /**
    * Updates a candidate's profile.
    *
-   * @param companyId tenant identifier
-   * @param id        candidate's unique identifier
-   * @param request   update request body
+   * @param id      candidate's unique identifier
+   * @param request update request body
    * @return 200 OK with updated candidate
    */
   @Operation(summary = "Update a candidate", security = @SecurityRequirement(name = "bearerAuth"))
@@ -134,11 +138,31 @@ public class CandidatoController {
   })
   @PutMapping("/{id}")
   public ResponseEntity<CandidatoResponseDto> actualizar(
-      @Parameter(description = "Tenant company UUID", required = true)
-      @RequestHeader("X-Company-Id") UUID companyId,
       @Parameter(description = "Candidate UUID", required = true)
       @PathVariable UUID id,
       @Valid @RequestBody CandidatoRequestDto request) {
-    return ResponseEntity.ok(candidatoUseCase.actualizar(companyId, id, request));
+    return ResponseEntity.ok(candidatoUseCase.actualizar(resolveCompanyId(), id, request));
+  }
+
+  /**
+   * Anonymizes a candidate's personal data (GDPR right to be forgotten).
+   *
+   * @param id candidate's unique identifier
+   * @return 204 No Content on success
+   */
+  @Operation(summary = "Anonymize candidate personal data (GDPR)",
+      security = @SecurityRequirement(name = "bearerAuth"))
+  @ApiResponses({
+      @ApiResponse(responseCode = "204", description = "Candidate data anonymized"),
+      @ApiResponse(responseCode = "401", description = "Not authenticated"),
+      @ApiResponse(responseCode = "404", description = "Candidate not found",
+          content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+  })
+  @DeleteMapping("/{id}/datos-personales")
+  public ResponseEntity<Void> anonimizarDatosPersonales(
+      @Parameter(description = "Candidate UUID", required = true)
+      @PathVariable UUID id) {
+    candidatoUseCase.anonimizar(resolveCompanyId(), id);
+    return ResponseEntity.noContent().build();
   }
 }

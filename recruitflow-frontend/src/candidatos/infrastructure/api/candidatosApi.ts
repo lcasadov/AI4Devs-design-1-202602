@@ -9,7 +9,7 @@ export async function getCandidatos(params?: PageRequest): Promise<Page<Candidat
   return data;
 }
 
-export async function getCandidatoById(id: number): Promise<Candidato> {
+export async function getCandidatoById(id: string): Promise<Candidato> {
   const { data } = await apiClient.get<Candidato>(`/candidatos/${id}`);
   return data;
 }
@@ -20,7 +20,7 @@ export async function createCandidato(request: CreateCandidatoRequest): Promise<
 }
 
 export async function updateCandidato(
-  id: number,
+  id: string,
   request: UpdateCandidatoRequest,
 ): Promise<Candidato> {
   const { data } = await apiClient.put<Candidato>(`/candidatos/${id}`, request);

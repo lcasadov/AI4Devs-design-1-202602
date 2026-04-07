@@ -5,9 +5,8 @@ import { useVacante } from '@/vacantes/hooks';
 
 // TODO: add candidatos section, pipeline status, edit/close actions with RBAC guards
 function VacanteDetailPage(): JSX.Element {
-  const { id } = useParams<{ id: string }>();
-  const vacanteId = Number(id);
-  const { data: vacante, isLoading, isError } = useVacante(vacanteId);
+  const { id = '' } = useParams<{ id: string }>();
+  const { data: vacante, isLoading, isError } = useVacante(id);
 
   if (isLoading) return <Spinner label="Cargando vacante..." />;
   if (isError || !vacante) return <div role="alert">Vacante no encontrada.</div>;

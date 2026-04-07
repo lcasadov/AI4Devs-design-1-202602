@@ -9,7 +9,7 @@ function VacantesPage(): JSX.Element {
   const navigate = useNavigate();
   const { data, isLoading, isError } = useVacantes();
 
-  const handleCardClick = (id: number): void => {
+  const handleCardClick = (id: string): void => {
     navigate(`/vacantes/${id}`);
   };
 

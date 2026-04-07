@@ -1,7 +1,7 @@
 export type CandidatoEstado = 'ACTIVO' | 'DESCARTADO' | 'CONTRATADO' | 'EN_PROCESO';
 
 export interface Candidato {
-  id: number;
+  id: string;
   nombre: string;
   apellidos: string;
   email: string;

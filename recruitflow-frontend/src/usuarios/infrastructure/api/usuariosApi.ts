@@ -9,7 +9,7 @@ export async function getUsuarios(params?: PageRequest): Promise<Page<Usuario>> 
   return data;
 }
 
-export async function getUsuarioById(id: number): Promise<Usuario> {
+export async function getUsuarioById(id: string): Promise<Usuario> {
   const { data } = await apiClient.get<Usuario>(`/usuarios/${id}`);
   return data;
 }
@@ -19,7 +19,7 @@ export async function createUsuario(request: CreateUsuarioRequest): Promise<Usua
   return data;
 }
 
-export async function updateUsuario(id: number, request: UpdateUsuarioRequest): Promise<Usuario> {
+export async function updateUsuario(id: string, request: UpdateUsuarioRequest): Promise<Usuario> {
   const { data } = await apiClient.put<Usuario>(`/usuarios/${id}`, request);
   return data;
 }

@@ -1,18 +1,19 @@
 export type EtapaPipeline =
-  | 'SCREENING'
-  | 'ENTREVISTA_TELEFONICA'
-  | 'ENTREVISTA_TECNICA'
-  | 'ENTREVISTA_FINAL'
-  | 'OFERTA'
-  | 'CONTRATADO'
-  | 'DESCARTADO';
+  | 'shortlisted'
+  | 'contacted'
+  | 'internal_interview'
+  | 'proposed'
+  | 'client_interview'
+  | 'offer'
+  | 'hired'
+  | 'discarded';
 
 export interface AplicacionPipeline {
-  id: number;
-  candidatoId: number;
+  id: string;
+  candidatoId: string;
   candidatoNombre: string;
   candidatoEmail: string;
-  vacanteId: number;
+  vacanteId: string;
   vacanteTitulo: string;
   etapa: EtapaPipeline;
   fechaAplicacion: string;

@@ -20,11 +20,11 @@ export function useCandidatos(params?: PageRequest) {
   });
 }
 
-export function useCandidato(id: number) {
+export function useCandidato(id: string) {
   return useQuery({
     queryKey: [QUERY_KEY, id],
     queryFn: () => getCandidatoById(id),
-    enabled: id > 0,
+    enabled: id.length > 0,
   });
 }
 
@@ -39,7 +39,7 @@ export function useCreateCandidato() {
 export function useUpdateCandidato() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, request }: { id: number; request: UpdateCandidatoRequest }) =>
+    mutationFn: ({ id, request }: { id: string; request: UpdateCandidatoRequest }) =>
       updateCandidato(id, request),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEY] }),
   });

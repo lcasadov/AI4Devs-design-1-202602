@@ -2,7 +2,7 @@ import type { Vacante } from '@/vacantes/domain';
 
 export interface VacanteCardProps {
   vacante: Vacante;
-  onClick?: (id: number) => void;
+  onClick?: (id: string) => void;
 }
 
 // TODO: implement card with status badge, salary range display, and action buttons

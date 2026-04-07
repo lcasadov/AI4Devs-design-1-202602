@@ -9,7 +9,7 @@ export async function getVacantes(params?: PageRequest): Promise<Page<Vacante>> 
   return data;
 }
 
-export async function getVacanteById(id: number): Promise<Vacante> {
+export async function getVacanteById(id: string): Promise<Vacante> {
   const { data } = await apiClient.get<Vacante>(`/vacantes/${id}`);
   return data;
 }
@@ -19,11 +19,11 @@ export async function createVacante(request: CreateVacanteRequest): Promise<Vaca
   return data;
 }
 
-export async function updateVacante(id: number, request: UpdateVacanteRequest): Promise<Vacante> {
+export async function updateVacante(id: string, request: UpdateVacanteRequest): Promise<Vacante> {
   const { data } = await apiClient.put<Vacante>(`/vacantes/${id}`, request);
   return data;
 }
 
-export async function deleteVacante(id: number): Promise<void> {
+export async function deleteVacante(id: string): Promise<void> {
   await apiClient.delete(`/vacantes/${id}`);
 }

@@ -21,11 +21,11 @@ export function useVacantes(params?: PageRequest) {
   });
 }
 
-export function useVacante(id: number) {
+export function useVacante(id: string) {
   return useQuery({
     queryKey: [QUERY_KEY, id],
     queryFn: () => getVacanteById(id),
-    enabled: id > 0,
+    enabled: id.length > 0,
   });
 }
 
@@ -40,7 +40,7 @@ export function useCreateVacante() {
 export function useUpdateVacante() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, request }: { id: number; request: UpdateVacanteRequest }) =>
+    mutationFn: ({ id, request }: { id: string; request: UpdateVacanteRequest }) =>
       updateVacante(id, request),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEY] }),
   });
@@ -49,7 +49,7 @@ export function useUpdateVacante() {
 export function useDeleteVacante() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: number) => deleteVacante(id),
+    mutationFn: (id: string) => deleteVacante(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEY] }),
   });
 }

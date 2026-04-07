@@ -1,7 +1,7 @@
 export type VacanteEstado = 'ABIERTA' | 'EN_PROCESO' | 'CERRADA' | 'PAUSADA';
 
 export interface Vacante {
-  id: number;
+  id: string;
   titulo: string;
   descripcion: string;
   departamento: string;
@@ -12,7 +12,7 @@ export interface Vacante {
   estado: VacanteEstado;
   fechaPublicacion: string;
   fechaCierre?: string;
-  reclutadorId: number;
+  reclutadorId: string;
 }
 
 export interface CreateVacanteRequest {

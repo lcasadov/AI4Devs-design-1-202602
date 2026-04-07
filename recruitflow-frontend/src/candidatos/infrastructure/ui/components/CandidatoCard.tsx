@@ -2,7 +2,7 @@ import type { Candidato } from '@/candidatos/domain';
 
 export interface CandidatoCardProps {
   candidato: Candidato;
-  onClick?: (id: number) => void;
+  onClick?: (id: string) => void;
 }
 
 // TODO: implement card with skills chips, experience badge, and action buttons

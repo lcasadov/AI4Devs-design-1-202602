@@ -20,11 +20,11 @@ export function useUsuarios(params?: PageRequest) {
   });
 }
 
-export function useUsuario(id: number) {
+export function useUsuario(id: string) {
   return useQuery({
     queryKey: [QUERY_KEY, id],
     queryFn: () => getUsuarioById(id),
-    enabled: id > 0,
+    enabled: id.length > 0,
   });
 }
 
@@ -39,7 +39,7 @@ export function useCreateUsuario() {
 export function useUpdateUsuario() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ id, request }: { id: number; request: UpdateUsuarioRequest }) =>
+    mutationFn: ({ id, request }: { id: string; request: UpdateUsuarioRequest }) =>
       updateUsuario(id, request),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEY] }),
   });

@@ -7,18 +7,18 @@ const QUERY_KEY = 'pipeline';
 
 // TODO: add optimistic updates for drag-and-drop kanban interactions
 
-export function usePipelineByVacante(vacanteId: number) {
+export function usePipelineByVacante(vacanteId: string) {
   return useQuery({
     queryKey: [QUERY_KEY, vacanteId],
     queryFn: () => getAplicacionesByVacante(vacanteId),
-    enabled: vacanteId > 0,
+    enabled: vacanteId.length > 0,
   });
 }
 
 export function useMoverEtapa() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ aplicacionId, request }: { aplicacionId: number; request: MoverEtapaRequest }) =>
+    mutationFn: ({ aplicacionId, request }: { aplicacionId: string; request: MoverEtapaRequest }) =>
       moverEtapa(aplicacionId, request),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: [QUERY_KEY] }),
   });

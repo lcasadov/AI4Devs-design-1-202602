@@ -2,7 +2,7 @@ export type UsuarioRol = 'ADMIN' | 'RECRUITER' | 'HIRING_MANAGER' | 'RRHH';
 export type UsuarioEstado = 'ACTIVO' | 'INACTIVO' | 'BLOQUEADO';
 
 export interface Usuario {
-  id: number;
+  id: string;
   nombre: string;
   apellidos: string;
   email: string;
