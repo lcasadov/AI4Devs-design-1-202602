@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 
 export interface ModalProps {
   isOpen: boolean;
@@ -9,12 +9,14 @@ export interface ModalProps {
 
 // TODO: implement full Modal component with portal, overlay, and focus trap
 function Modal({ isOpen, onClose, title, children }: ModalProps): JSX.Element | null {
+  const titleId = useId();
+
   if (!isOpen) return null;
 
   return (
-    <div role="dialog" aria-modal="true" aria-labelledby="modal-title">
-      <div id="modal-title">{title}</div>
-      <button onClick={onClose} aria-label="Cerrar modal">X</button>
+    <div role="dialog" aria-modal="true" aria-labelledby={titleId}>
+      <div id={titleId}>{title}</div>
+      <button type="button" onClick={onClose} aria-label="Cerrar modal">X</button>
       <div>{children}</div>
     </div>
   );

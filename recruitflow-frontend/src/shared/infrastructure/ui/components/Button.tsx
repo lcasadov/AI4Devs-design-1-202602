@@ -9,7 +9,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 // TODO: implement full Button component with variant styles (Tailwind CSS not yet added)
 function Button({ children, isLoading = false, disabled, ...props }: ButtonProps): JSX.Element {
   return (
-    <button disabled={disabled ?? isLoading} {...props}>
+    <button disabled={disabled || isLoading} {...props}>
       {isLoading ? 'Cargando...' : children}
     </button>
   );

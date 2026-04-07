@@ -1,6 +1,6 @@
 // TODO: implement useAuth with Zustand store — login, logout, token refresh, role checks
 export interface AuthUser {
-  id: number;
+  id: string;
   nombre: string;
   email: string;
   rol: 'ADMIN' | 'RECRUITER' | 'HIRING_MANAGER' | 'RRHH';
