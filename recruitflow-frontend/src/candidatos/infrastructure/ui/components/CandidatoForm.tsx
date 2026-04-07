@@ -40,6 +40,14 @@ function CandidatoForm({ onSubmit, isSubmitting = false, defaultValues }: Candid
       />
       <Input id="email" label="Email" type="email" error={errors.email?.message} {...register('email')} />
       <Input id="ubicacion" label="Ubicación" error={errors.ubicacion?.message} {...register('ubicacion')} />
+      <Input
+        id="experienciaAnios"
+        label="Años de experiencia"
+        type="number"
+        min={0}
+        error={errors.experienciaAnios?.message}
+        {...register('experienciaAnios', { valueAsNumber: true })}
+      />
       <Button type="submit" isLoading={isSubmitting}>
         Guardar
       </Button>

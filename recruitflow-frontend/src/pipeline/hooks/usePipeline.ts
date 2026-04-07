@@ -11,7 +11,7 @@ export function usePipelineByVacante(vacanteId: string) {
   return useQuery({
     queryKey: [QUERY_KEY, vacanteId],
     queryFn: () => getAplicacionesByVacante(vacanteId),
-    enabled: vacanteId.length > 0,
+    enabled: typeof vacanteId === 'string' && vacanteId.trim().length > 0,
   });
 }
 
