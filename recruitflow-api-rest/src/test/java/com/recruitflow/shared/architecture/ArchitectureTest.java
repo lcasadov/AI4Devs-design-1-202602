@@ -146,8 +146,8 @@ class ArchitectureTest {
         .layer("Config").definedBy("..infrastructure.config..")
         .layer("Domain").definedBy("..domain..")
         .layer("Application").definedBy("..application..")
-        .whereLayer("Domain").mayNotAccessLayersExcept("Application")
-        .whereLayer("Application").mayNotAccessLayersExcept()
+        .whereLayer("Domain").mayOnlyAccessLayers("Application")
+        .whereLayer("Application").mayNotAccessAnyLayer()
         .as("Hexagonal architecture layer rules");
 
     rule.check(importedClasses);
