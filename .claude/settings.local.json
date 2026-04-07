@@ -15,7 +15,32 @@
       "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 rm -r --cached recruitflow-frontend/dist/)",
       "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 add recruitflow-frontend/.gitignore)",
       "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 commit -m \"chore\\(RF-1\\): add .gitignore and remove dist/ from tracking:*)",
-      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 log --oneline -3)"
+      "Bash(git -C C:/proyectos/AI4Devs-design-1-202602 log --oneline -3)",
+      "Bash(gh api:*)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Bash(node --check \"C:\\\\proyectos\\\\AI4Devs-design-1-202602\\\\.claude\\\\hooks\\\\context-monitor.js\")",
+      "Bash(node \"C:\\\\proyectos\\\\AI4Devs-design-1-202602\\\\.claude\\\\hooks\\\\context-monitor.js\")",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 log --oneline -10)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 status --porcelain)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 status --short)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-frontend/src/candidatos/domain/Candidato.ts)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff --stat HEAD recruitflow-api-rest/)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-frontend/src/candidatos/hooks/useCandidatos.ts)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-frontend/src/candidatos/infrastructure/api/candidatosApi.ts)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-frontend/src/pipeline/ recruitflow-frontend/src/usuarios/ recruitflow-frontend/src/vacantes/)",
+      "Bash(mvn compile:*)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff recruitflow-api-rest/)",
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(mvn test-compile:*)",
+      "Bash(mvn dependency:build-classpath -q)",
+      "Bash(jar tf:*)",
+      "Bash(jar xf:*)",
+      "Bash(javap -p com/tngtech/archunit/library/Architectures.class)",
+      "Bash(git -C /c/proyectos/AI4Devs-design-1-202602 diff -- recruitflow-frontend/)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
     ]
   }
 }
