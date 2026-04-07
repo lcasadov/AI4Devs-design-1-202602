@@ -57,9 +57,13 @@ public class CandidatoController {
    * @return a placeholder company UUID until JWT auth is implemented
    */
   private UUID resolveCompanyId() {
-    // TODO RF-2: extract companyId from JWT claims
-    // String companyId = ((JwtPrincipal) authentication.getPrincipal()).getCompanyId();
-    return UUID.fromString("00000000-0000-0000-0000-000000000000");
+    // TODO RF-2: extract from JWT claims
+    // BLOCKER: hardcoded placeholder — production deployment blocked until RF-2
+    String activeProfile = System.getProperty("spring.profiles.active", "dev");
+    if (!activeProfile.contains("dev") && !activeProfile.contains("test")) {
+      throw new IllegalStateException("companyId resolution not implemented. Deploy blocked until RF-2.");
+    }
+    return UUID.fromString("00000000-0000-0000-0000-000000000001");
   }
 
   /**
