@@ -1,10 +1,20 @@
 {
   "permissions": {
     "allow": [
-      "Bash(grep -rn \"\\\\.claude/agents/project\\\\.md\\\\|padel-api-rest\\\\|padel_api_rest\\\\|PADEL\" \"C:\\\\proyectos\\\\AI4Devs-design-1-202602\\\\.claude\\\\agents\" --include=\"*.md\")",
       "Bash(python3:*)",
-      "Bash(grep -n \"agent-memory\\\\|Users\\\\\\\\Luis\\\\|AGENT_MEMORY\" \"C:/proyectos/AI4Devs-design-1-202602/CLAUDE.md\")",
-"Bash(gh pr:*)",
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(gh api:*)",
+      "Bash(gh pr:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(mvn compile:*)",
+      "Bash(mvn test-compile:*)",
+      "Bash(mvn -version)",
+      "Bash(java -version)",
+      "Bash(for f:*)",
+      "Bash(do echo:*)",
+      "Bash(echo \"EXIT:$?\")",
       "Bash(mv .claude/agents/*.md .claude/agents/*.md)"
     ]
   }
